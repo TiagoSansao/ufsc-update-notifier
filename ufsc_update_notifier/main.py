@@ -85,4 +85,5 @@ def main():
   
   send_notification('No updates so far, you are a winner man (; kkkkkk', ufsc_last_updates)
   
-main()
+if __name__ == "__main__": 
+  main()
