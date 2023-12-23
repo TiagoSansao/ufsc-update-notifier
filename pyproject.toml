@@ -16,4 +16,7 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
-ufsc-update-notifier = "src.main:main"
+ufsc-update-notifier = "ufsc_update_notifier.main:main"
+
+[package]
+include  = [".env"]
