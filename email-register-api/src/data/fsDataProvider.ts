@@ -34,7 +34,9 @@ class FsDataProvider implements DataProvider {
     const isAlreadyRegistered = this.checkIfEmailIsAlreadyRegistered(email);
     if (isAlreadyRegistered) throw new AlreadyRegisteredEmailError(email);
 
-    await appendFilePromise(this.filePath, email);
+    const separator = '\n';
+
+    await appendFilePromise(this.filePath, separator + email);
 
     return email;
   }
