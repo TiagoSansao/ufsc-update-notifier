@@ -7,12 +7,20 @@ import { NotRegisteredEmailError } from '../errors/notRegisteredEmail';
 const readFilePromise = promisify(fs.readFile);
 const appendFilePromise = promisify(fs.appendFile);
 const writeFilePromise = promisify(fs.writeFile);
+const existsFilePromise = promisify(fs.exists);
 
 class FsDataProvider implements DataProvider {
   private readonly filePath: string;
 
   constructor(filePath: string) {
     this.filePath = filePath;
+
+    this.guaranteeThatFileExists();
+  }
+
+  private async guaranteeThatFileExists(): Promise<void> {
+    const fileExists: boolean = await existsFilePromise(this.filePath);
+    if (!fileExists) await writeFilePromise(this.filePath, '');
   }
 
   private checkIfEmailIsAlreadyRegistered(email: string): boolean {
@@ -22,14 +30,16 @@ class FsDataProvider implements DataProvider {
     return emails.includes(email);
   }
 
-  public async saveEmail(email: string): Promise<void> {
+  public async saveEmail(email: string): Promise<string> {
     const isAlreadyRegistered = this.checkIfEmailIsAlreadyRegistered(email);
     if (isAlreadyRegistered) throw new AlreadyRegisteredEmailError(email);
 
     await appendFilePromise(this.filePath, email);
+
+    return email;
   }
 
-  public async deleteDemail(email: string): Promise<void> {
+  public async deleteEmail(email: string): Promise<string> {
     const isAlreadyRegistered = this.checkIfEmailIsAlreadyRegistered(email);
     if (isAlreadyRegistered) throw new NotRegisteredEmailError(email);
 
@@ -41,6 +51,8 @@ class FsDataProvider implements DataProvider {
     const newFileData = newEmailsList.join('\n');
 
     writeFilePromise(this.filePath, newFileData, { encoding: 'utf-8' });
+
+    return email;
   }
 }
 

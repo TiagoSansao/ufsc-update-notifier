@@ -1,11 +1,13 @@
 import dotenv from 'dotenv';
+import { MissingEnvVar } from '../errors/missingEnvVar';
 
-dotenv.config({ path: 'config/.env' });
+const ENV_PATH = 'config/.env';
+dotenv.config({ path: ENV_PATH });
 
-function getEnv(key: string): string | undefined {
+function getEnv(key: string): string {
   const value = process.env[key];
 
-  console.warn(`${key} environment variable is not set!`);
+  if (!value) throw new MissingEnvVar(key, ENV_PATH);
 
   return value;
 }

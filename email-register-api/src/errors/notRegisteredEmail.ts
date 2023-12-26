@@ -1,3 +1,5 @@
+import { ApplicationError } from './application';
+
 class NotRegisteredEmailError extends ApplicationError {
   constructor(email: string) {
     super();

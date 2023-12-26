@@ -1,4 +1,4 @@
-import { getEnv } from '../utils/getEnv';
+import { getEnv } from './utils/getEnv';
 import { api } from './api/server';
 
 const PORT = getEnv('PORT') || '3000';
