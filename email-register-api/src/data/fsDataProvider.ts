@@ -41,7 +41,7 @@ class FsDataProvider implements DataProvider {
 
   public async deleteEmail(email: string): Promise<string> {
     const isAlreadyRegistered = this.checkIfEmailIsAlreadyRegistered(email);
-    if (isAlreadyRegistered) throw new NotRegisteredEmailError(email);
+    if (!isAlreadyRegistered) throw new NotRegisteredEmailError(email);
 
     const fileData = await readFilePromise(this.filePath, 'utf-8');
     const emails = fileData.split('\n');
