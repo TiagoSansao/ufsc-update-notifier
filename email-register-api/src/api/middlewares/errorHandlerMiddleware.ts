@@ -1,8 +1,16 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { ApplicationError } from '../../errors/application';
 
-function errorHandlerMiddleware(error: unknown, _req: Request, res: Response) {
-  console.log('caiu no error handler');
+function errorHandlerMiddleware(
+  error: unknown,
+  _req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  if (res.headersSent) {
+    next(error);
+    return;
+  }
 
   if (!(error instanceof ApplicationError)) {
     console.error(error);
@@ -10,7 +18,6 @@ function errorHandlerMiddleware(error: unknown, _req: Request, res: Response) {
     res.status(500).json({ error: 'Internal server error.' });
     return;
   }
-  console.log(error.statusCode);
 
   if (error.statusCode === 500) {
     console.error(error);
