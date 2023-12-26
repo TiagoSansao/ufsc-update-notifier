@@ -3,6 +3,7 @@ import { promisify } from 'util';
 import fs from 'fs';
 import { AlreadyRegisteredEmailError } from '../errors/alreadyRegisteredEmail';
 import { NotRegisteredEmailError } from '../errors/notRegisteredEmail';
+import { logger } from '../utils/logger';
 
 const readFilePromise = promisify(fs.readFile);
 const appendFilePromise = promisify(fs.appendFile);
@@ -38,6 +39,8 @@ class FsDataProvider implements DataProvider {
 
     await appendFilePromise(this.filePath, separator + email);
 
+    logger.info(`${email} was successfully saved.`);
+
     return email;
   }
 
@@ -53,6 +56,8 @@ class FsDataProvider implements DataProvider {
     const newFileData = newEmailsList.join('\n');
 
     writeFilePromise(this.filePath, newFileData, { encoding: 'utf-8' });
+
+    logger.info(`${email} was successfully deleted.`);
 
     return email;
   }
