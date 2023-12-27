@@ -17,12 +17,15 @@ async function saveEmailEndpoint(
 
   if (!email) {
     res.status(400).json({ error: "Missing 'email' property on request body" });
+    return;
   }
 
   try {
     const response = await saveEmailService.execute(email);
 
-    res.status(200).json({ data: response });
+    res
+      .status(200)
+      .json({ email: response, message: 'Saved e-mail successfully.' });
   } catch (error: unknown) {
     next(error);
   }

@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response } from 'express';
-import { SaveEmailService } from '../../services/saveEmailService';
 import { FsDataProvider } from '../../data/fsDataProvider';
 import { DataProvider } from '../../interfaces/dataProvider';
 import { getEnv } from '../../utils/getEnv';
@@ -18,12 +17,15 @@ async function deleteEmailEndpoint(
 
   if (!email) {
     res.status(400).json({ error: "Missing 'email' property on request body" });
+    return;
   }
 
   try {
     const response = await deleteEmailService.execute(email);
 
-    res.status(200).json({ data: response });
+    res
+      .status(200)
+      .json({ email: response, message: 'Deleted e-mail successfully.' });
   } catch (error: unknown) {
     next(error);
   }
