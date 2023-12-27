@@ -80,7 +80,6 @@ def send_notifications(subject: str, ufsc_last_updates: list[str],
 
         for email in emails:
             try:
-                print(message)
                 server.sendmail(SENDER_EMAIL, email, message.encode("utf-8"))
                 print(f"Sent e-mail to {email}.")
             except Exception as exception:
