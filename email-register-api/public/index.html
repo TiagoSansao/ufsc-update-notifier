@@ -119,7 +119,6 @@
     saveEmailEl.addEventListener('click', () => {
       const email = emailEl.value;
 
-
       fetch('/api/email', {
         method: 'POST',
         headers: {
@@ -138,8 +137,12 @@
             <p style="color: #ff1313;">${data.error}</p>
           `
         }
+      }).catch((error) => {
+        console.log(error);
+        feedbackEl.innerHTML = `
+            <p style="color: #ff1313;">Um erro inesperado ocorreu, tente novamente mais tarde.</p>
+          `
       })
-  
 
       setTimeout(() => {
         feedbackEl.innerHTML = ''
@@ -148,7 +151,7 @@
 
     deleteEmailEl.addEventListener('click', () => {
       const email = emailEl.value;
-      
+
       fetch('/api/email', {
         method: 'DELETE',
         headers: {
@@ -167,8 +170,14 @@
             <p style="color: #ff1313;">${data.error}</p>
           `
         }
+      }).catch((error) => {
+        console.log(error);
+        feedbackEl.innerHTML = `
+              <p style="color: #ff1313;">Um erro inesperado ocorreu, tente novamente mais tarde.</p>
+            `
       })
-    
+  
+  
       setTimeout(() => {
         feedbackEl.innerHTML = ''
       }, 3000)
