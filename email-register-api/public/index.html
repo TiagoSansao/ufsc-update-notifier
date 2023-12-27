@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UFSC Update Notifier</title>
+
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box; 
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: lightblue;
+    }
+    
+    main {
+      padding: 20px;
+      background-color: #1659bf;
+      border: 5px solid #0f4098;
+      min-width: 600px;
+    }
+
+    header {
+      margin-bottom: 30px;
+      border-bottom: 3px solid #0f4098;
+      width: 100%;
+    }
+
+    h1 {
+      text-align: center;
+      color: white;
+      text-shadow: 1px 1px 1px black;;
+    }
+    
+    input#email {
+      width: 100%;
+      padding: 3px;
+      margin-bottom: 10px;
+      outline: none;
+    }
+    
+    div#submit-section {
+      display: flex;
+      gap: 5px;
+    }
+    
+    input[type="submit"] {
+      cursor: pointer; 
+      flex: 1;
+      padding: 3px;
+      font-size: 0.9rem;
+      font-weight: bold;
+      text-shadow: 1px 1px 1px black;
+    }
+    
+    input#save-email {
+      background-color: rgb(50, 140, 100);
+      border: 3px solid rgb(22, 73, 50);
+      color: white;
+    }
+
+    input#delete-email {
+      background-color: rgb(169, 39, 39);
+      border: 3px solid rgb(109, 19, 19);
+      color: white;
+    }
+
+    #feedback {
+      margin-top: 10px;
+      width: 100%;
+      background-color: #0f4098;
+      height: 50px;
+      padding: 3px;
+      content: "‎";
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>UFSC Update Notifier</h1>
+    </header>
+    <section>
+      <form id="email-form">
+        <input required id="email" type="email" placeholder="Seu e-mail" />
+        <div id="submit-section">
+          <input id="save-email" type="submit" value="Salvar" />
+          <input id="delete-email" type="submit" value="Deletar" />
+        </div>
+      </form>
+     <div id="feedback"></div>
+    </section>
+  </main>
+
+  <script> 
+    const emailEl = document.querySelector("#email");
+    const saveEmailEl = document.querySelector("#save-email");  
+    const deleteEmailEl = document.querySelector("#delete-email");  
+    const emailFormEl = document.querySelector("#email-form");
+    const feedbackEl = document.querySelector("#feedback");
+
+    emailFormEl.addEventListener('submit', (event) => {
+      event.preventDefault();
+    })
+
+    saveEmailEl.addEventListener('click', () => {
+      const email = emailEl.value;
+
+
+      fetch('/api/email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.email) {
+          feedbackEl.innerHTML = `
+            <p style="color: #67ff43">${data.message}</p>
+          `
+        } else {
+          feedbackEl.innerHTML = `
+            <p style="color: #ff1313;">${data.error}</p>
+          `
+        }
+      })
+  
+
+      setTimeout(() => {
+        feedbackEl.innerHTML = ''
+      }, 3000)
+    })
+
+    deleteEmailEl.addEventListener('click', () => {
+      const email = emailEl.value;
+      
+      fetch('/api/email', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.email) {
+          feedbackEl.innerHTML = `
+            <p style="color: #67ff43">${data.message}</p>
+          `
+        } else {
+          feedbackEl.innerHTML = `
+            <p style="color: #ff1313;">${data.error}</p>
+          `
+        }
+      })
+    
+      setTimeout(() => {
+        feedbackEl.innerHTML = ''
+      }, 3000)
+    })
+
+
+  </script>
+</body>
+</html>
