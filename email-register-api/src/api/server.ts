@@ -1,6 +1,6 @@
 import express from 'express';
 import swaggerUi from 'swagger-ui-express';
-import swaggerData from '../../docs/swagger.json';
+import swaggerData from '../swagger/swagger.json';
 import { routes } from './routes';
 import { errorHandlerMiddleware } from './middlewares/errorHandlerMiddleware';
 
