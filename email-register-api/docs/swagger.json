@@ -1,0 +1,187 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "UFSC Update Notifier",
+    "description": "Este é um simples projeto, de um vestibulando de SI, que irá notificar você, em sua caixa de e-mail, automaticamente quando houver alguma updat no site do vestibular da UFSC 2024: um novo edital, lista de aprovados, próximas chamadas...\n\nO código do projeto está aberto [neste repositório](https://github.com/TiagoSansao/ufsc-update-notifier) do GitHub. Favor julgar apenas o código da API que fiz em Node, não sou dev python, nem me atentei às melhores práticas naquele script kkkkk (;\n\nNo mais, espero ter ajudado você em algo. Se quiser bater um papo, me chama aí no [meu LinkedIn](https://www.linkedin.com/in/tiago-sansao/). Bom uso, tmj!",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://ufsc-update-notifier.com"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Email",
+      "description": "Adicione ou remova aqui o seu e-mail da lista de envio."
+    }
+  ],
+  "paths": {
+    "/api/email": {
+      "post": {
+        "tags": [
+          "Email"
+        ],
+        "summary": "Adicionar e-mail na lista de envio.",
+        "operationId": "addEmail",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/emailInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Adicionado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/emailAddSuccessOutput"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Campo e-mail não encontrado no body",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/missingEmailInBodyOutput"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "O e-mail já estava registrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/emailAlreadyRegistedOutput"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Email"
+        ],
+        "summary": "Remover e-mail da lista de envio.",
+        "operationId": "removeEmail",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/emailInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Removido com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/emailDeleteSuccessOutput"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Campo e-mail não encontrado no body",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/missingEmailInBodyOutput"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "O e-mail não foi encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/notRegisteredEmailOutput"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "emailInput": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "your-email@gmail.com"
+          }
+        }
+      },
+      "emailAddSuccessOutput": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "your-email@gmail.com"
+          },
+          "message": {
+            "type": "string",
+            "example": "Added e-mail successfully."
+          }
+        }
+      },
+      "emailDeleteSuccessOutput": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "your-email@gmail.com"
+          },
+          "message": {
+            "type": "string",
+            "example": "Deleted e-mail successfully."
+          }
+        }
+      },
+      "emailAlreadyRegistedOutput": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "example": "The e-mail: your-email@gmail.com was already registered"
+          }
+        }
+      },
+      "missingEmailInBodyOutput": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "example": "Missing 'email' property on request body"
+          }
+        }
+      },
+      "notRegisteredEmailOutput": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "example": "The e-mail: your-email@gmail.com was not registered"
+          }
+        }
+      }
+    }
+  }
+}
