@@ -27,6 +27,7 @@
       background-color: #1659bf;
       border: 5px solid #0f4098;
       min-width: 600px;
+      position: relative;
     }
 
     header {
@@ -86,6 +87,22 @@
       align-items: center;
     }
     
+    footer#credits {
+      position: absolute;
+      text-align: center;
+      color: #0f4098;
+      bottom: -55px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-weight: bold;
+    }
+
+    footer#credits > a {
+      text-decoration: underline;
+      color: #0f4098;
+    }
+
+
     </style>
 </head>
 <body>
@@ -103,6 +120,12 @@
       </form>
      <div id="feedback"></div>
     </section>
+    <footer id="credits">
+      <p>Tiago Schulz Sansão &copy; 2023 - 2024</p>
+      <a target="_blank" href="https://www.linkedin.com/in/tiago-sansao/">LinkedIn</a>
+      |
+      <a target="_blank" href="https://github.com/TiagoSansao">GitHub</a>
+    </footer>
   </main>
 
   <script> 
