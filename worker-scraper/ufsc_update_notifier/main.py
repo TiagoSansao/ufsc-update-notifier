@@ -81,7 +81,7 @@ def send_notifications(subject: str, ufsc_last_updates: list[str],
         for email in emails:
             try:
                 server.sendmail(SENDER_EMAIL, email, message.encode("utf-8"))
-                print(f"Sent e-mail to {email}.")
+                print(f"Sent e-mail to {email}")
             except Exception as exception:
                 print(exception, file=sys.stderr)
                 print(MailingError(email).message)
@@ -114,15 +114,9 @@ def main():
 
         if has_changed:
             save_new_site_data(ufsc_last_updates)
-            send_notifications("NOVA ATUALIZAÇÃO, ABRE AGR O SITE KRL!!!",
-                               ufsc_last_updates, emails)
-            return
-
-        send_notifications(
-            "No updates so far, you are a winner man (; kkkkkk",
-            ufsc_last_updates,
-            emails,
-        )
+            send_notifications(
+                "Nova atualização no vestibular da UFSC 2024, confira!!!",
+                ufsc_last_updates, emails)
     except ApplicationError as application_error:
         print(application_error.message)
     except Exception as exception:
