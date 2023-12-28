@@ -1,3 +1,4 @@
+from email.mime.text import MIMEText
 import requests
 import sys
 import os
@@ -75,8 +76,16 @@ def send_notifications(subject: str, ufsc_last_updates: list[str],
 
     with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
         server.login(SENDER_EMAIL, SENDER_PASSWORD)
+        footer = """
+Acesse o site: https://vestibularunificado2024.ufsc.br/
+
+Este e-mail NÃO é de origem da UFSC ou de qualquer orgão ligado a ela!
+Trata-se de um projeto sem fins lucrativos feito por um indivíduo.
+LinkedIn do desenvolvedor: https://www.linkedin.com/in/tiago-sansao/
+Repositório do projeto: https://github.com/TiagoSansao/ufsc-update-notifier
+        """
         updates = "\n".join(ufsc_last_updates)
-        message = f"Subject: {subject}\n\n{updates}"
+        message = f"Subject: {subject}\n\n{updates}\n{footer}"
 
         for email in emails:
             try:
