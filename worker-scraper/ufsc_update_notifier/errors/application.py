@@ -1,2 +1,2 @@
 class ApplicationError(Exception):
-  message: str
+    message: str

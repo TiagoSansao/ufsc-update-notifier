@@ -1,0 +1,15 @@
+services:
+  email-register-api:
+    container_name: email-register-api
+    build: .
+    ports:
+      - 3000:3000
+    volumes:
+      - ./vol:/app/vol/
+    env_file:
+      - config/.env
+
+  # The worker-scraper at the moment is a script run by a crontab.
+  # Anyway, I created the docker-compose file because I intend
+  # in the future redo it as a node project in a more structured way
+  # using queues for sending e-mails, store the data in a database...
