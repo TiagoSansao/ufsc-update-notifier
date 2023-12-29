@@ -1,4 +1,3 @@
-from email.mime.text import MIMEText
 import requests
 import sys
 import os
