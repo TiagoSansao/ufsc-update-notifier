@@ -1,4 +1,4 @@
-from application import ApplicationError
+from ufsc_update_notifier.errors.application import ApplicationError
 
 
 class MissingEnvVarError(ApplicationError):
